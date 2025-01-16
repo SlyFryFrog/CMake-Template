@@ -1,0 +1,32 @@
+{
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "abstract",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/out/build",
+            "generator": "Ninja"
+        },
+        {
+            "inherits": "abstract",
+            "name": "Debug",
+            "displayName": "Debug",
+            "description": "Sets Ninja generator, build and install directory",
+            "binaryDir": "${sourceDir}/out/build/Debug",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "1",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "inherits": "abstract",
+            "name": "Release",
+            "displayName": "Release",
+            "description": "Sets Ninja generator, build and install directory",
+            "binaryDir": "${sourceDir}/out/Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        }
+    ]
+}

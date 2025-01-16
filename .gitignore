@@ -1,0 +1,119 @@
+# --- General ---
+.DS_Store
+Thumbs.db
+*.log
+*.temp
+*.bak
+*.swp
+*.swo
+
+# --- CMake ---
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+out/
+build/
+Makefile
+compile_commands.json
+Testing/
+CTestTestfile.cmake
+
+# --- Compilers ---
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+*.exe
+*.out
+*.pdb
+*.ilk
+*.dSYM/
+
+# --- Editors/IDEs ---
+# Visual Studio
+.vscode/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+*.ncb
+*.log
+*.opensdf
+*.sdf
+ipch/
+*.aps
+*.pch
+*.vs/
+
+# CLion
+.idea/
+*.iml
+cmake-build-*/
+
+# Other IDEs/Editors
+*.kate-swp
+*.swp
+*.swo
+
+# --- Debug/Profiling Tools ---
+*.gcda
+*.gcno
+*.gcov
+
+# --- Temporary Files ---
+*.tmp
+*.temp
+*.log
+*.bak
+*.old
+*.pyc
+*.class
+
+# --- Output Folders ---
+bin/
+obj/
+lib/
+dist/
+
+# --- Package Managers ---
+# Conan
+conanbuildinfo.*
+conanfile.*
+# Vcpkg
+.vcpkg-root
+vcpkg_installed/
+
+# --- Other Tools ---
+*.iobj
+*.ipdb
+*.rsp
+*.tlog
+*.log
+*.idb
+
+# --- Generated Docs ---
+/doc/
+/docs/
+/documentation/
+
+# --- Backup Files ---
+*~
+*.orig
+*.bak
+*.backup
+
+# --- Miscellaneous ---
+*.tags
+*.lint
+*.session
+*.cache
+*.log
+
+# --- Coverage Reports ---
+coverage/
+lcov-report/
