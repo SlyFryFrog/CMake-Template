@@ -50,14 +50,14 @@ bool AVLTree::insert(const std::string& key, int value)
 		}
 
 		// Check value of key for direction
-        if (key < current->m_key)
-        {
-            current = current->m_left;
-        }
-        else 
-        {
-            current = current->m_right;
-        }
+		if (key < current->m_key)
+		{
+			current = current->m_left;
+		}
+		else
+		{
+			current = current->m_right;
+		}
 	}
 
 	// Base case where key wasn't found in tree
@@ -76,14 +76,14 @@ bool AVLTree::insert(const std::string& key, int value)
 		}
 
 		// Check value of key for direction
-        if (key < current->m_key)
-        {
-            current = current->m_left;
-        }
-        else 
-        {
-            current = current->m_right;
-        }
+		if (key < current->m_key)
+		{
+			current = current->m_left;
+		}
+		else
+		{
+			current = current->m_right;
+		}
 	}
 
 	// Base case where key wasn't found in tree
@@ -111,7 +111,7 @@ bool AVLTree::insert(const std::string& key, int value)
 
 int& AVLTree::operator[](const std::string& key)
 {
-    Node* current = m_root;
+	Node* current = m_root;
 
 	while (current != nullptr)
 	{
@@ -121,17 +121,57 @@ int& AVLTree::operator[](const std::string& key)
 		}
 
 		// Check value of key for direction
-        if (key < current->m_key)
-        {
-            current = current->m_left;
-        }
-        else 
-        {
-            current = current->m_right;
-        }
+		if (key < current->m_key)
+		{
+			current = current->m_left;
+		}
+		else
+		{
+			current = current->m_right;
+		}
 	}
 }
 
 void AVLTree::operator=(const AVLTree& other)
 {
+}
+
+void AVLTree::rotate(Node* anchorNode)
+{
+	
+}
+
+void AVLTree::update_height()
+{
+	// Get current height of subtrees, or -1 if null
+	int leftHeight, rightHeight = -1;
+	if (m_root->m_left)
+	{
+		leftHeight = m_root->m_left->m_height;
+	}
+
+	if (m_root->m_right)
+	{
+		rightHeight = m_root->m_right->m_height;
+	}
+
+	// Assign height with calculated node height
+	m_height = ((leftHeight > rightHeight) ? leftHeight : rightHeight) + 1;
+}
+
+int AVLTree::get_balance() const
+{
+	int leftBalance, rightBalance = -1;
+
+	if (m_root->m_left)
+	{
+		leftBalance = m_root->m_left->m_height;
+	}
+
+	if (m_root->m_right)
+	{
+		rightBalance = m_root->m_right->m_height;
+	}
+
+	return leftBalance - rightBalance;
 }

@@ -12,6 +12,7 @@ class AVLTree
 	{
 		Node* m_left{};
 		Node* m_right{};
+		int m_height;
 		int m_data;
 		std::string m_key;
 
@@ -47,7 +48,8 @@ public:
 	[[nodiscard]] bool remove(const std::string& key) const;
 	[[nodiscard]] bool contains(const std::string& key) const;
 	[[nodiscard]] std::optional<int> get(const std::string& key) const;
-	[[nodiscard]] std::vector<std::string> findRange(const std::string& lowKey, const std::string& highKey) const;
+	[[nodiscard]] std::vector<std::string> findRange(const std::string& lowKey,
+													 const std::string& highKey) const;
 	[[nodiscard]] std::vector<std::string> keys() const;
 
 	/**
@@ -71,4 +73,9 @@ public:
 	{
 		return os;
 	}
+
+private:
+	void rotate(Node* anchorNode);
+	void update_height();
+	[[nodiscard]] int get_balance() const;
 };
