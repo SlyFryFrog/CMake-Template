@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(INSERT_PROJECT_NAME LANGUAGES C CXX)
+project(AVL_Tree LANGUAGES C CXX)
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED YES)
@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
+file(GLOB_RECURSE TEST_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
 
 option(COPY_RESOURCES "Enable copying resource files to the build directory" ON)
 option(ENABLE_VENDOR_LIBS "Enable building vendor libraries" ON)
@@ -16,7 +17,11 @@ option(ENABLE_VENDOR_LIBS "Enable building vendor libraries" ON)
 # add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/<insert>)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-
+add_executable(Tests 
+    ${TEST_SOURCES} 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/AVLTree.cpp
+    ${HEADERS}
+)
 # target_link_libraries(
 #   ${INSERT_PROJECT_NAME} 
 #   PRIVATE 
@@ -28,6 +33,12 @@ target_include_directories(
     ${PROJECT_NAME} 
     PRIVATE 
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+target_include_directories(
+    Tests
+    PRIVATE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 
 # Copy resource files to build dir
