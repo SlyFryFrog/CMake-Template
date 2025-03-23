@@ -12,19 +12,25 @@ class AVLTree
 	{
 		Node* m_left{};
 		Node* m_right{};
-		int m_height;
+		Node* m_parent{};
+		int m_height{};
 		int m_data;
 		std::string m_key;
 
-		explicit Node(const std::string& key, int data) : m_data(data), m_key(key)
+		Node(const std::string& key, int data) : m_data(data), m_key(key)
 		{
 		}
-		~Node() = default;
+
+		~Node()
+		{
+			delete m_left;
+			delete m_right;
+		}
 	};
 
+	Node* m_root{};
 	size_t m_size{};
 	size_t m_height{};
-	Node* m_root{};
 
 public:
 	/**
@@ -45,8 +51,12 @@ public:
 	~AVLTree();
 
 	bool insert(const std::string& key, int value);
+	bool insert(const std::string& key, const int& value, Node*& root);
+
 	[[nodiscard]] bool remove(const std::string& key) const;
 	[[nodiscard]] bool contains(const std::string& key) const;
+	[[nodiscard]] bool contains(const std::string& key, Node* root) const;
+
 	[[nodiscard]] std::optional<int> get(const std::string& key) const;
 	[[nodiscard]] std::vector<std::string> findRange(const std::string& lowKey,
 													 const std::string& highKey) const;
@@ -66,6 +76,9 @@ public:
 	 */
 	[[nodiscard]] size_t getHeight() const;
 
+	static int getHeight(Node* node);
+	
+
 	int& operator[](const std::string& key);
 	void operator=(const AVLTree& other);
 
@@ -75,7 +88,12 @@ public:
 	}
 
 private:
-	void rotate(Node* anchorNode);
+	void rebalance(Node* node);
 	void update_height();
+
+	void rotate_right(Node* node);
+	void rotate_left(Node* node);
+	void inorderTraversal(Node* node, std::vector<std::string>& result) const;
+
 	[[nodiscard]] int get_balance() const;
 };

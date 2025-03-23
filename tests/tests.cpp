@@ -10,9 +10,13 @@ int main() {
     AVLTree tree;
     bool insertResult;
     insertResult = tree.insert("F", 'F');
+    std::cout << insertResult;
     insertResult = tree.insert("F", 'F'); // false, no duplicates allowed
+    std::cout << insertResult;
     insertResult = tree.insert("K", 'K');
+    std::cout << insertResult;
     insertResult = tree.insert("X", 'X');// single rotate left
+    std::cout << insertResult;
     cout << endl << endl;
     cout << tree << endl;
 
@@ -37,15 +41,17 @@ int main() {
     cout << endl << endl;
     cout << tree << endl;
 
-    // size and getHeight
+    // // size and getHeight
     cout << "tree size: " << tree.size() << endl; // 10
     cout << "tree height: " << tree.getHeight() << endl; // 3
     cout << endl;
 //
 //    // contains
-//    bool containsResult;
-//    containsResult = tree.contains("A"); // true
-//    containsResult = tree.contains("N"); // false
+    bool containsResult;
+    containsResult = tree.contains("F"); // true
+    std::cout << containsResult << "\n";
+    containsResult = tree.contains("N"); // false
+    std::cout << containsResult << "\n";
 //
 //    // get
 //    optional<int> getResult;
