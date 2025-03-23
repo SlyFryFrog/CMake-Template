@@ -52,6 +52,10 @@ int main() {
     std::cout << containsResult << "\n";
     containsResult = tree.contains("N"); // false
     std::cout << containsResult << "\n";
+    for (const auto& val : tree.findRange("A", "F"))
+    {
+        std::cout << val << "\n";
+    }
 //
 //    // get
 //    optional<int> getResult;

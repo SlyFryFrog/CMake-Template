@@ -70,7 +70,7 @@ bool AVLTree::insert(const std::string& key, const int& value, Node*& root)
 	return contains(key, m_root);
 }
 
-[[nodiscard]] bool AVLTree::contains(const std::string& key, Node* root) const
+[[nodiscard]] bool AVLTree::contains(const std::string& key, const Node* root) const
 {
 	// Base base where key wasn't found
 	if (!root)
@@ -103,6 +103,32 @@ bool AVLTree::insert(const std::string& key, const int& value, Node*& root)
 [[nodiscard]] std::vector<std::string> AVLTree::findRange(const std::string& lowKey,
 														  const std::string& highKey) const
 {
+	std::vector<std::string> keysVector;
+
+	findRange(lowKey, highKey, keysVector, m_root);
+
+	return keysVector;
+}
+
+void AVLTree::findRange(const std::string& lowKey, const std::string& highKey,
+						std::vector<std::string>& keysVector, const Node* root) const
+{
+	// Nullptr reached, stop recursion
+	if (!root)
+	{
+		return;
+	}
+
+	// Check if key is in range, if so add to vector
+	if (root->m_key >= lowKey && root->m_key <= highKey)
+	{
+		keysVector.push_back(root->m_key);
+	}
+
+
+	// Recursively calls function until reaches nullptr
+	findRange(lowKey, highKey, keysVector, root->m_left);
+	findRange(lowKey, highKey, keysVector, root->m_right);
 }
 
 [[nodiscard]] std::vector<std::string> AVLTree::keys() const
@@ -124,8 +150,9 @@ bool AVLTree::insert(const std::string& key, const int& value, Node*& root)
 	return m_height;
 }
 
-int AVLTree::getHeight(Node* node) {
-    return node ? node->m_height : 0;
+int AVLTree::getHeight(Node* node)
+{
+	return node ? node->m_height : 0;
 }
 
 
@@ -158,13 +185,14 @@ void AVLTree::operator=(const AVLTree& other)
 
 void AVLTree::rebalance(Node* node)
 {
+	int balance = getBalance(node);
 	if (node == nullptr)
 	{
 		return;
 	}
 }
 
-void AVLTree::update_height()
+void AVLTree::updateHeight()
 {
 	// Get current height of subtrees, or -1 if null
 	int leftHeight, rightHeight = -1;
@@ -182,7 +210,7 @@ void AVLTree::update_height()
 	m_height = ((leftHeight > rightHeight) ? leftHeight : rightHeight) + 1;
 }
 
-void AVLTree::rotate_right(Node* node)
+void AVLTree::rotateRight(Node* node)
 {
 	Node* parent = node->m_parent;
 	Node* left = node->m_left;
@@ -196,28 +224,16 @@ void AVLTree::rotate_right(Node* node)
 	}
 }
 
-void AVLTree::rotate_left(Node* node)
+void AVLTree::rotateLeft(Node* node)
 {
 	Node* parent = node->m_parent;
 	Node* left = node->m_left;
 	Node* right = node->m_right;
 }
 
-int AVLTree::get_balance() const
+int AVLTree::getBalance(Node* node) const
 {
-	int leftBalance, rightBalance = -1;
-
-	if (m_root->m_left)
-	{
-		leftBalance = m_root->m_left->m_height;
-	}
-
-	if (m_root->m_right)
-	{
-		rightBalance = m_root->m_right->m_height;
-	}
-
-	return leftBalance - rightBalance;
+	return node ? getHeight(node->m_left) - getHeight(node->m_right) : 0;
 }
 
 void AVLTree::inorderTraversal(Node* node, std::vector<std::string>& result) const

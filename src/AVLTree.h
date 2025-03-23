@@ -54,12 +54,17 @@ public:
 	bool insert(const std::string& key, const int& value, Node*& root);
 
 	[[nodiscard]] bool remove(const std::string& key) const;
+
 	[[nodiscard]] bool contains(const std::string& key) const;
-	[[nodiscard]] bool contains(const std::string& key, Node* root) const;
+	[[nodiscard]] bool contains(const std::string& key, const Node* root) const;
 
 	[[nodiscard]] std::optional<int> get(const std::string& key) const;
+
 	[[nodiscard]] std::vector<std::string> findRange(const std::string& lowKey,
 													 const std::string& highKey) const;
+	void findRange(const std::string& lowKey, const std::string& highKey,
+				   std::vector<std::string>& keysVector, const Node* root) const;
+	
 	[[nodiscard]] std::vector<std::string> keys() const;
 
 	/**
@@ -75,9 +80,7 @@ public:
 	 * @return size_t Height of tree.
 	 */
 	[[nodiscard]] size_t getHeight() const;
-
 	static int getHeight(Node* node);
-	
 
 	int& operator[](const std::string& key);
 	void operator=(const AVLTree& other);
@@ -89,11 +92,11 @@ public:
 
 private:
 	void rebalance(Node* node);
-	void update_height();
+	void updateHeight();
 
-	void rotate_right(Node* node);
-	void rotate_left(Node* node);
+	void rotateRight(Node* node);
+	void rotateLeft(Node* node);
 	void inorderTraversal(Node* node, std::vector<std::string>& result) const;
 
-	[[nodiscard]] int get_balance() const;
+	[[nodiscard]] int getBalance(Node* node) const;
 };
