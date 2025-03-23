@@ -55,7 +55,26 @@ public:
 
 	[[nodiscard]] bool remove(const std::string& key) const;
 
+	/**
+	 * @brief Iterates through the tree until it finds the key or reaches a nullptr.
+	 * Operates in log_2(n).
+	 *
+	 * @param key Key of the element being searched for.
+	 * @return true Key was found.
+	 * @return false Key was not found.
+	 */
 	[[nodiscard]] bool contains(const std::string& key) const;
+
+	/**
+	 * @brief Recursive method implementation of contains. Calls itself until it reaches a Node
+	 * containing the key or nullptr.
+	 * Operates in log_2(n)
+	 *
+	 * @param key Key being searched for.
+	 * @param root Current Node being searched from.
+	 * @return true root contains the key.
+	 * @return false root doesn't contain the key and is nullptr.
+	 */
 	[[nodiscard]] bool contains(const std::string& key, const Node* root) const;
 
 	[[nodiscard]] std::optional<int> get(const std::string& key) const;
@@ -64,7 +83,12 @@ public:
 													 const std::string& highKey) const;
 	void findRange(const std::string& lowKey, const std::string& highKey,
 				   std::vector<std::string>& keysVector, const Node* root) const;
-	
+
+	/**
+	 * @brief Iterates through the tree and adds all keys in-order.
+	 * 
+	 * @return std::vector<std::string> Keys in the form of an in-order vector.
+	 */
 	[[nodiscard]] std::vector<std::string> keys() const;
 
 	/**

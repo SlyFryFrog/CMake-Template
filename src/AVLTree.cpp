@@ -61,7 +61,6 @@ bool AVLTree::insert(const std::string& key, const int& value, Node*& root)
 
 [[nodiscard]] bool AVLTree::remove(const std::string& key) const
 {
-	// Base case where key wasn't found in tree
 	return false;
 }
 
@@ -124,7 +123,6 @@ void AVLTree::findRange(const std::string& lowKey, const std::string& highKey,
 	{
 		keysVector.push_back(root->m_key);
 	}
-
 
 	// Recursively calls function until reaches nullptr
 	findRange(lowKey, highKey, keysVector, root->m_left);
