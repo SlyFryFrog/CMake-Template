@@ -255,30 +255,23 @@ int AVLTree::getBalance(Node* node) const
 	return node ? getHeight(node->m_left) - getHeight(node->m_right) : 0;
 }
 
-void AVLTree::treePrint(std::ostream& os, Node* const& root)
+void AVLTree::treePrint(std::ostream& os, Node* const& root, int depth)
 {
 	if (!root)
 	{
 		return;
 	}
 
+	treePrint(os, root->m_right, depth + 1);
 
-	treePrint(os, root->m_right);
-
-
-	for (int i = 0; i < root->m_height; i++)
+	for (size_t i = 0; i < depth; i++)
 	{
 		os << "\t";
 	}
-	os << "[" << root->m_key << ", " << root->m_data << "]\n";
 
-	treePrint(os, root->m_left);
+	os << "<" << root->m_key << ", " << root->m_data << ">\n";
 
-	for (int i = 0; i < root->m_height; i++)
-	{
-		os << " ";
-	}
-	os << "[" << root->m_key << ", " << root->m_data << "]\n";
+	treePrint(os, root->m_left, depth + 1);
 }
 
 void AVLTree::inorderTraversal(Node* node, std::vector<std::string>& result) const

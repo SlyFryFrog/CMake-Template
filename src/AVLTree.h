@@ -127,7 +127,7 @@ private:
 	void rotateLeft(Node* node);
 	void inorderTraversal(Node* node, std::vector<std::string>& result) const;
 
-	static void treePrint(std::ostream& os, Node* const& root);
+	static void treePrint(std::ostream& os, Node* const& root, int depth=0);
 
 	[[nodiscard]] int getBalance(Node* node) const;
 };
