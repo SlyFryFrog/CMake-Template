@@ -77,6 +77,12 @@ public:
 	 */
 	[[nodiscard]] bool contains(const std::string& key, const Node* root) const;
 
+	/**
+	 * @brief Returns the value of a key stored in the tree. If an invalid key is passed, an error may be thrown.
+	 * 
+	 * @param key Identifier being compared against and searched for in the tree.
+	 * @return std::optional<int> Value of the {key, value} pair.
+	 */
 	[[nodiscard]] std::optional<int> get(const std::string& key) const;
 
 	[[nodiscard]] std::vector<std::string> findRange(const std::string& lowKey,
@@ -115,7 +121,7 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const AVLTree& tree)
 	{
 		treePrint(os, tree.m_root);
-		
+
 		return os;
 	}
 
@@ -127,7 +133,16 @@ private:
 	void rotateLeft(Node* node);
 	void inorderTraversal(Node* node, std::vector<std::string>& result) const;
 
-	static void treePrint(std::ostream& os, Node* const& root, int depth=0);
+	/**
+	 * @brief Parses through the tree from right to left. Returns std::ostream& with tree displayer
+	 * from left (root) to right (leaf). Some visual difficulties may occur when printing larger
+	 * datasets.
+	 *
+	 * @param os Stream being written to.
+	 * @param root Base from which the function will traverse recursively.
+	 * @param depth Current depth of the root.
+	 */
+	static void treePrint(std::ostream& os, Node* const& root, int depth = 0);
 
 	[[nodiscard]] int getBalance(Node* node) const;
 };

@@ -266,10 +266,10 @@ void AVLTree::treePrint(std::ostream& os, Node* const& root, int depth)
 
 	for (size_t i = 0; i < depth; i++)
 	{
-		os << "\t";
+		os << "    ";
 	}
 
-	os << "<" << root->m_key << ", " << root->m_data << ">\n";
+	os << "<" << root->m_key << ": " << root->m_data << ">\n";
 
 	treePrint(os, root->m_left, depth + 1);
 }
