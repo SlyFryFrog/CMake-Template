@@ -56,6 +56,9 @@ int main() {
     {
         std::cout << val << "\n";
     }
+    
+    int data = tree.get("F").value();
+    std::cout << data;
 //
 //    // get
 //    optional<int> getResult;

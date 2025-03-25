@@ -86,7 +86,7 @@ public:
 
 	/**
 	 * @brief Iterates through the tree and adds all keys in-order.
-	 * 
+	 *
 	 * @return std::vector<std::string> Keys in the form of an in-order vector.
 	 */
 	[[nodiscard]] std::vector<std::string> keys() const;
@@ -107,10 +107,15 @@ public:
 	static int getHeight(Node* node);
 
 	int& operator[](const std::string& key);
+	[[nodiscard]] std::optional<int> get(const std::string& key, Node* const& root) const;
+	static int& get_value(const std::string& key, Node* const& root);
+
 	void operator=(const AVLTree& other);
 
-	friend std::ostream& operator<<(std::ostream& os, const AVLTree& avlTree)
+	friend std::ostream& operator<<(std::ostream& os, const AVLTree& tree)
 	{
+		treePrint(os, tree.m_root);
+		
 		return os;
 	}
 
@@ -121,6 +126,8 @@ private:
 	void rotateRight(Node* node);
 	void rotateLeft(Node* node);
 	void inorderTraversal(Node* node, std::vector<std::string>& result) const;
+
+	static void treePrint(std::ostream& os, Node* const& root);
 
 	[[nodiscard]] int getBalance(Node* node) const;
 };

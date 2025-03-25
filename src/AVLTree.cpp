@@ -2,6 +2,8 @@
 
 #include <cstddef>
 #include <optional>
+#include <ostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -91,15 +93,56 @@ bool AVLTree::insert(const std::string& key, const int& value, Node*& root)
 	}
 }
 
-
-[[nodiscard]] std::optional<int> AVLTree::get(const std::string& key) const
+std::optional<int> AVLTree::get(const std::string& key) const
 {
-
-	// Base case where key wasn't found in tree
-	return std::nullopt;
+	return get(key, m_root);
 }
 
-[[nodiscard]] std::vector<std::string> AVLTree::findRange(const std::string& lowKey,
+std::optional<int> AVLTree::get(const std::string& key, Node* const& root) const
+{
+	if (!root)
+	{
+		return std::nullopt;
+	}
+
+	if (root->m_key == key)
+	{
+		return root->m_data;
+	}
+
+	if (key < root->m_key)
+	{
+		return get(key, root->m_left);
+	}
+	else
+	{
+		return get(key, root->m_right);
+	}
+}
+
+int& AVLTree::get_value(const std::string& key, Node* const& root)
+{
+	if (!root)
+	{
+		throw std::runtime_error("Invalid key, can't return reference to nullptr Node.");
+	}
+	
+	if (root->m_key == key)
+	{
+		return root->m_data;
+	}
+
+	if (root->m_key > key)
+	{
+		return get_value(key, root->m_left);
+	}
+	else
+	{
+		return get_value(key, root->m_right);
+	}
+}
+
+std::vector<std::string> AVLTree::findRange(const std::string& lowKey,
 														  const std::string& highKey) const
 {
 	std::vector<std::string> keysVector;
@@ -156,25 +199,7 @@ int AVLTree::getHeight(Node* node)
 
 int& AVLTree::operator[](const std::string& key)
 {
-	Node* current = m_root;
-
-	while (current)
-	{
-		if (current->m_key == key)
-		{
-			return current->m_data;
-		}
-
-		// Check value of key for direction
-		if (key < current->m_key)
-		{
-			current = current->m_left;
-		}
-		else
-		{
-			current = current->m_right;
-		}
-	}
+	return get_value(key, m_root);
 }
 
 void AVLTree::operator=(const AVLTree& other)
@@ -184,10 +209,6 @@ void AVLTree::operator=(const AVLTree& other)
 void AVLTree::rebalance(Node* node)
 {
 	int balance = getBalance(node);
-	if (node == nullptr)
-	{
-		return;
-	}
 }
 
 void AVLTree::updateHeight()
@@ -232,6 +253,32 @@ void AVLTree::rotateLeft(Node* node)
 int AVLTree::getBalance(Node* node) const
 {
 	return node ? getHeight(node->m_left) - getHeight(node->m_right) : 0;
+}
+
+void AVLTree::treePrint(std::ostream& os, Node* const& root)
+{
+	if (!root)
+	{
+		return;
+	}
+
+
+	treePrint(os, root->m_right);
+
+
+	for (int i = 0; i < root->m_height; i++)
+	{
+		os << "\t";
+	}
+	os << "[" << root->m_key << ", " << root->m_data << "]\n";
+
+	treePrint(os, root->m_left);
+
+	for (int i = 0; i < root->m_height; i++)
+	{
+		os << " ";
+	}
+	os << "[" << root->m_key << ", " << root->m_data << "]\n";
 }
 
 void AVLTree::inorderTraversal(Node* node, std::vector<std::string>& result) const
