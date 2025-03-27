@@ -70,7 +70,7 @@ int main()
 	std::cout << data;
 
 	cout << tree_2 << endl;
-	// cout << tree << endl;
+	cout << tree << endl;
 
 	//
 	//    // get

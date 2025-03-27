@@ -17,10 +17,22 @@ class AVLTree
 		int m_data;
 		std::string m_key;
 
+		/**
+		 * @brief Creates a new instance of Node with a key-value pair.
+		 *
+		 * @param key Identifier for the Node.
+		 * @param data Data associated with and stored at the key.
+		 */
 		Node(const std::string& key, int data) : m_data(data), m_key(key)
 		{
 		}
 
+		/**
+		 * @brief Recursively creates a deep copy of each Node from the starting point of the Node
+		 * passed into the constructor.
+		 *
+		 * @param other Root of the Nodes being deep copied.
+		 */
 		Node(const Node& other) :
 			m_data(other.m_data),
 			m_key(other.m_key),
@@ -31,20 +43,23 @@ class AVLTree
 		{
 		}
 
+		/**
+		 * @brief Recursively called delete on all children (left and right).
+		 */
 		~Node()
 		{
-			if (m_left != nullptr)
-			{
-				delete m_left;
-				m_left = nullptr;
-			}
-			if (m_right != nullptr)
-			{
-				delete m_right;
-				m_right = nullptr;
-			}
+
+			delete m_left;
+			delete m_right;
 		}
 
+		/**
+		 * @brief Compares the keys of two Nodes.
+		 *
+		 * @param other Node being compared to.
+		 * @return true Both keys are the same.
+		 * @return false The keys are different.
+		 */
 		bool operator==(const Node*& other) const
 		{
 			return m_key == other->m_key;
@@ -74,6 +89,7 @@ public:
 	~AVLTree();
 
 	bool insert(const std::string& key, int value);
+
 	bool insert(const std::string& key, const int& value, Node*& root);
 
 	[[nodiscard]] bool remove(const std::string& key);
@@ -141,8 +157,20 @@ public:
 	[[nodiscard]] std::optional<int> get(const std::string& key, Node* const& root) const;
 	static int& get_value(const std::string& key, Node* const& root);
 
+	/**
+	 * @brief Creates a deep copy of another tree and frees all currently allocated memory.
+	 * 
+	 * @param other Tree being deep copied.
+	 */
 	void operator=(const AVLTree& other);
 
+	/**
+	 * @brief Prints the current layout of the tree.
+	 *
+	 * @param os Stream being printed to.
+	 * @param tree Tree being printed.
+	 * @return std::ostream& Modified ostream with the tree elements printed.
+	 */
 	friend std::ostream& operator<<(std::ostream& os, const AVLTree& tree)
 	{
 		if (!tree.m_root)
@@ -180,5 +208,10 @@ private:
 
 	Node*& getSuccessor(Node*& root);
 
+	/**
+	 * @brief Creates a deep copy of a given tree and frees all currently allocated memory.
+	 *
+	 * @param other Tree being deep copied.
+	 */
 	void copy(const AVLTree& other);
 };
