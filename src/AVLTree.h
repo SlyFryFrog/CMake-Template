@@ -21,10 +21,33 @@ class AVLTree
 		{
 		}
 
+		Node(const Node& other) :
+			m_data(other.m_data),
+			m_key(other.m_key),
+			m_height(other.m_height),
+			m_parent(other.m_parent ? new Node(*other.m_parent) : nullptr),
+			m_left(other.m_left ? new Node(*other.m_left) : nullptr),
+			m_right(other.m_right ? new Node(*other.m_right) : nullptr)
+		{
+		}
+
 		~Node()
 		{
-			delete m_left;
-			delete m_right;
+			if (m_left != nullptr)
+			{
+				delete m_left;
+				m_left = nullptr;
+			}
+			if (m_right != nullptr)
+			{
+				delete m_right;
+				m_right = nullptr;
+			}
+		}
+
+		bool operator==(const Node*& other) const
+		{
+			return m_key == other->m_key;
 		}
 	};
 
@@ -53,7 +76,8 @@ public:
 	bool insert(const std::string& key, int value);
 	bool insert(const std::string& key, const int& value, Node*& root);
 
-	[[nodiscard]] bool remove(const std::string& key) const;
+	[[nodiscard]] bool remove(const std::string& key);
+	bool remove(const std::string& key, Node*& root);
 
 	/**
 	 * @brief Iterates through the tree until it finds the key or reaches a nullptr.
@@ -78,8 +102,9 @@ public:
 	[[nodiscard]] bool contains(const std::string& key, const Node* root) const;
 
 	/**
-	 * @brief Returns the value of a key stored in the tree. If an invalid key is passed, an error may be thrown.
-	 * 
+	 * @brief Returns the value of a key stored in the tree. If an invalid key is passed, an error
+	 * may be thrown.
+	 *
 	 * @param key Identifier being compared against and searched for in the tree.
 	 * @return std::optional<int> Value of the {key, value} pair.
 	 */
@@ -120,7 +145,14 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const AVLTree& tree)
 	{
-		treePrint(os, tree.m_root);
+		if (!tree.m_root)
+		{
+			os << "null";
+		}
+		else
+		{
+			treePrint(os, tree.m_root);
+		}
 
 		return os;
 	}
@@ -144,5 +176,9 @@ private:
 	 */
 	static void treePrint(std::ostream& os, Node* const& root, int depth = 0);
 
-	[[nodiscard]] int getBalance(Node* node) const;
+	static int getBalance(const Node* node);
+
+	Node*& getSuccessor(Node*& root);
+
+	void copy(const AVLTree& other);
 };

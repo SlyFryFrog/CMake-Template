@@ -1,5 +1,6 @@
 #include "AVLTree.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <optional>
 #include <ostream>
@@ -11,6 +12,7 @@ AVLTree::AVLTree() = default;
 
 AVLTree::AVLTree(const AVLTree& other)
 {
+	copy(other);
 }
 
 AVLTree::~AVLTree()
@@ -61,10 +63,54 @@ bool AVLTree::insert(const std::string& key, const int& value, Node*& root)
 }
 
 
-[[nodiscard]] bool AVLTree::remove(const std::string& key) const
+[[nodiscard]] bool AVLTree::remove(const std::string& key)
 {
-	return false;
+	return remove(key, m_root);
 }
+
+bool AVLTree::remove(const std::string& key, Node*& root)
+{
+	// Base case where removal wasn't found
+	if (!root)
+	{
+		return false;
+	}
+
+	if (root->m_key == key)
+	{
+		// Leaf Node removal
+		if (!root->m_left && !root->m_right)
+		{
+			if (!root->m_parent)
+			{
+				m_root = nullptr;
+			}
+			else if (root->m_parent->m_left == root)
+			{
+				root->m_parent->m_left = nullptr;
+			}
+			else if (root->m_parent->m_right == root)
+			{
+				root->m_parent->m_right = nullptr;
+			}
+
+			// Free memory and decrement size
+			delete root;
+			m_size--;
+			return true;
+		}
+	}
+
+	if (root->m_key > key)
+	{
+		return remove(key, root->m_left);
+	}
+	else if (root->m_key < key)
+	{
+		return remove(key, root->m_right);
+	}
+}
+
 
 [[nodiscard]] bool AVLTree::contains(const std::string& key) const
 {
@@ -204,6 +250,7 @@ int& AVLTree::operator[](const std::string& key)
 
 void AVLTree::operator=(const AVLTree& other)
 {
+	copy(other);
 }
 
 void AVLTree::rebalance(Node* node)
@@ -250,7 +297,7 @@ void AVLTree::rotateLeft(Node* node)
 	Node* right = node->m_right;
 }
 
-int AVLTree::getBalance(Node* node) const
+int AVLTree::getBalance(const Node* node)
 {
 	return node ? getHeight(node->m_left) - getHeight(node->m_right) : 0;
 }
@@ -286,4 +333,18 @@ void AVLTree::inorderTraversal(Node* node, std::vector<std::string>& result) con
 	inorderTraversal(node->m_left, result);
 	result.push_back(node->m_key);
 	inorderTraversal(node->m_right, result);
+}
+
+void AVLTree::copy(const AVLTree& other)
+{
+	// Self-assignment
+	if (this == &other)
+    {
+        return;
+    }
+
+	delete m_root;
+	m_size = other.m_size;
+	m_height = other.m_height;
+	m_root = new Node(*other.m_root);
 }
