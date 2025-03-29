@@ -48,7 +48,6 @@ class AVLTree
 		 */
 		~Node()
 		{
-
 			delete m_left;
 			delete m_right;
 		}
@@ -93,7 +92,7 @@ public:
 	bool insert(const std::string& key, const int& value, Node*& root);
 
 	[[nodiscard]] bool remove(const std::string& key);
-	bool remove(const std::string& key, Node*& root);
+	bool remove(const std::string& key, Node* root);
 
 	/**
 	 * @brief Iterates through the tree until it finds the key or reaches a nullptr.
@@ -126,10 +125,10 @@ public:
 	 */
 	[[nodiscard]] std::optional<int> get(const std::string& key) const;
 
-	[[nodiscard]] std::vector<std::string> findRange(const std::string& lowKey,
-													 const std::string& highKey) const;
-	void findRange(const std::string& lowKey, const std::string& highKey,
-				   std::vector<std::string>& keysVector, const Node* root) const;
+	[[nodiscard]] std::vector<int> findRange(const std::string& lowKey,
+											 const std::string& highKey) const;
+	static void findRange(const std::string& lowKey, const std::string& highKey,
+						  std::vector<int>& rangeVector, const Node* root);
 
 	/**
 	 * @brief Iterates through the tree and adds all keys in-order.
@@ -159,7 +158,7 @@ public:
 
 	/**
 	 * @brief Creates a deep copy of another tree and frees all currently allocated memory.
-	 * 
+	 *
 	 * @param other Tree being deep copied.
 	 */
 	void operator=(const AVLTree& other);
@@ -179,10 +178,34 @@ public:
 		}
 		else
 		{
+			// Append new line for clarity
+			os << "\n";
 			treePrint(os, tree.m_root);
 		}
 
 		return os;
+	}
+
+	const Node* getNode(const std::string& key)
+	{
+		return getNode(key, m_root);
+	}
+
+	const Node* getNode(const std::string& key, Node* const& root)
+	{
+		if (root->m_key == key)
+		{
+			return root;
+		}
+
+		if (root->m_key > key)
+		{
+			return getNode(key, root->m_left);
+		}
+		else
+		{
+			return getNode(key, root->m_right);
+		}
 	}
 
 private:

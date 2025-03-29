@@ -35,6 +35,7 @@ bool AVLTree::insert(const std::string& key, const int& value, Node*& root)
 		return true;
 	}
 
+	// First: insert key-value pair
 	if (root->m_key < key)
 	{
 		if (!insert(key, value, root->m_right))
@@ -51,24 +52,27 @@ bool AVLTree::insert(const std::string& key, const int& value, Node*& root)
 	}
 	else
 	{
+		// Key matches a key-value pair, don't insert
 		return false;
 	}
+
 	// Update height
 	root->m_height = 1 + std::max(getHeight(root->m_left), getHeight(root->m_right));
 	m_height = getHeight(m_root);
 
-	// Rebalance the tree
+	// Second: rebalance the tree
 	rebalance(root);
+
 	return true;
 }
 
 
-[[nodiscard]] bool AVLTree::remove(const std::string& key)
+bool AVLTree::remove(const std::string& key)
 {
 	return remove(key, m_root);
 }
 
-bool AVLTree::remove(const std::string& key, Node*& root)
+bool AVLTree::remove(const std::string& key, Node* root)
 {
 	// Base case where removal wasn't found
 	if (!root)
@@ -78,7 +82,7 @@ bool AVLTree::remove(const std::string& key, Node*& root)
 
 	if (root->m_key == key)
 	{
-		// Leaf Node removal
+		// Case 1: Leaf Node removal
 		if (!root->m_left && !root->m_right)
 		{
 			if (!root->m_parent)
@@ -99,43 +103,83 @@ bool AVLTree::remove(const std::string& key, Node*& root)
 			m_size--;
 			return true;
 		}
+		// Case 2: Node with only 1 child
+		else if (!root->m_left || !root->m_right)
+		{
+			Node* child = root->m_left ? root->m_left : root->m_right;
+
+			// // Update pointers
+			if (!root->m_parent)
+			{
+				m_root = child;
+			}
+			else if (root->m_parent->m_left == root)
+			{
+				root->m_parent->m_left = child;
+			}
+			else if (root->m_parent->m_right == root)
+			{
+				root->m_parent->m_right = child;
+			}
+
+			// Update parent for the child to the root's parent
+			if (child)
+			{
+				child->m_parent = root->m_parent;
+			}	
+
+			// Remove active pointers (child) before deletion
+			root->m_left = nullptr;
+			root->m_right = nullptr;
+
+			// Free memory and decrement size
+			delete root;
+			m_size--;
+			return true;
+		}
+		// Case 3: Node with two children
+		else
+		{
+
+		}
 	}
 
 	if (root->m_key > key)
 	{
 		return remove(key, root->m_left);
 	}
-	else if (root->m_key < key)
+	else
 	{
 		return remove(key, root->m_right);
 	}
 }
 
 
-[[nodiscard]] bool AVLTree::contains(const std::string& key) const
+bool AVLTree::contains(const std::string& key) const
 {
 	return contains(key, m_root);
 }
 
-[[nodiscard]] bool AVLTree::contains(const std::string& key, const Node* root) const
+bool AVLTree::contains(const std::string& key, const Node* root) const
 {
-	// Base base where key wasn't found
+	// Base case where key wasn't found
 	if (!root)
 	{
 		return false;
 	}
-	else if (root->m_key == key)
+
+	if (root->m_key == key)
 	{
 		return true;
 	}
 
-	if (root->m_left && root->m_left->m_key < key)
-	{
-		return contains(key, root->m_right);
-	}
-	else if (root->m_right && root->m_right->m_key > key)
+	if (key < root->m_key)
 	{
 		return contains(key, root->m_left);
+	}
+	else
+	{
+		return contains(key, root->m_right);
 	}
 }
 
@@ -172,7 +216,7 @@ int& AVLTree::get_value(const std::string& key, Node* const& root)
 	{
 		throw std::runtime_error("Invalid key, can't return reference to nullptr Node.");
 	}
-	
+
 	if (root->m_key == key)
 	{
 		return root->m_data;
@@ -188,18 +232,17 @@ int& AVLTree::get_value(const std::string& key, Node* const& root)
 	}
 }
 
-std::vector<std::string> AVLTree::findRange(const std::string& lowKey,
-														  const std::string& highKey) const
+std::vector<int> AVLTree::findRange(const std::string& lowKey, const std::string& highKey) const
 {
-	std::vector<std::string> keysVector;
+	std::vector<int> rangeVector;
 
-	findRange(lowKey, highKey, keysVector, m_root);
+	findRange(lowKey, highKey, rangeVector, m_root);
 
-	return keysVector;
+	return rangeVector;
 }
 
 void AVLTree::findRange(const std::string& lowKey, const std::string& highKey,
-						std::vector<std::string>& keysVector, const Node* root) const
+						std::vector<int>& rangeVector, const Node* root)
 {
 	// Nullptr reached, stop recursion
 	if (!root)
@@ -210,15 +253,15 @@ void AVLTree::findRange(const std::string& lowKey, const std::string& highKey,
 	// Check if key is in range, if so add to vector
 	if (root->m_key >= lowKey && root->m_key <= highKey)
 	{
-		keysVector.push_back(root->m_key);
+		rangeVector.push_back(root->m_data);
 	}
 
 	// Recursively calls function until reaches nullptr
-	findRange(lowKey, highKey, keysVector, root->m_left);
-	findRange(lowKey, highKey, keysVector, root->m_right);
+	findRange(lowKey, highKey, rangeVector, root->m_left);
+	findRange(lowKey, highKey, rangeVector, root->m_right);
 }
 
-[[nodiscard]] std::vector<std::string> AVLTree::keys() const
+std::vector<std::string> AVLTree::keys() const
 {
 	std::vector<std::string> result;
 
@@ -227,12 +270,12 @@ void AVLTree::findRange(const std::string& lowKey, const std::string& highKey,
 	return result;
 }
 
-[[nodiscard]] size_t AVLTree::size() const
+size_t AVLTree::size() const
 {
 	return m_size;
 }
 
-[[nodiscard]] size_t AVLTree::getHeight() const
+size_t AVLTree::getHeight() const
 {
 	return m_height;
 }
@@ -256,6 +299,12 @@ void AVLTree::operator=(const AVLTree& other)
 void AVLTree::rebalance(Node* node)
 {
 	int balance = getBalance(node);
+
+	// Prevent segfault from trying to access nullptr
+	if (node)
+	{
+		rebalance(node->m_parent);
+	}
 }
 
 void AVLTree::updateHeight()
@@ -339,9 +388,9 @@ void AVLTree::copy(const AVLTree& other)
 {
 	// Self-assignment
 	if (this == &other)
-    {
-        return;
-    }
+	{
+		return;
+	}
 
 	delete m_root;
 	m_size = other.m_size;

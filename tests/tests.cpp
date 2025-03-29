@@ -3,74 +3,79 @@
 #include <string>
 #include <vector>
 #include "AVLTree.h"
+#include "flora_test.hpp"
+#include "custom_tests.hpp"
 
 using namespace std;
 
 int main()
 {
-	AVLTree tree;
-	bool insertResult;
-	insertResult = tree.insert("F", 'F');
-	insertResult = tree.remove("F");
-	std::cout << insertResult;
-	std::cout << tree;
-	insertResult = tree.insert("F", 'F'); // false, no duplicates allowed
-	std::cout << insertResult;
-	insertResult = tree.insert("K", 'K');
-	std::cout << insertResult;
-	insertResult = tree.insert("X", 'X'); // single rotate left
-	std::cout << insertResult;
-	AVLTree tree_2;
-	tree_2.remove("A");
-	tree_2.insert("A", 2);
-	tree_2.remove("B");
-	std::cout << "\n" << tree_2 << "\n";
+    flora_test::run_tests();
 
-	tree_2 = tree;
-	// tree_2.remove("F");
+	// AVLTree tree;
+	// AVLTree tree_2;
+	// bool insertResult;
+	// insertResult = tree.insert("F", 'F');
+	// insertResult = tree.remove("F");
+	// std::cout << insertResult;
+	// std::cout << tree;
+	// insertResult = tree.insert("F", 'F'); // false, no duplicates allowed
+	// std::cout << insertResult;
+	// insertResult = tree.insert("K", 'K');
+	// std::cout << insertResult;
+	// insertResult = tree.insert("X", 'X'); // single rotate left
+	// std::cout << insertResult;
+	// tree_2.remove("A");
+	// tree_2.insert("A", 2);
+	// tree_2.remove("B");
+	// std::cout << "\n" << tree_2 << "\n";
+	
 
-	insertResult = tree.insert("C", 'C');
-	insertResult = tree.insert("A", 'A'); // single rotate right
-	cout << endl << endl;
-	cout << tree << endl;
+	// tree_2 = tree;
+	// // tree_2.remove("F");
 
-	insertResult = tree.insert("D", 'D'); // double rotate right
-	cout << endl << endl;
-	cout << tree << endl;
+	// insertResult = tree.insert("C", 'C');
+	// insertResult = tree.insert("A", 'A'); // single rotate right
+	// cout << endl << endl;
+	// cout << tree << endl;
 
-	insertResult = tree.insert("R", 'R'); // double rotate left
-	cout << endl << endl;
-	cout << tree << endl;
+	// insertResult = tree.insert("D", 'D'); // double rotate right
+	// cout << endl << endl;
+	// cout << tree << endl;
 
-	insertResult = tree.insert("V", 'V');
-	insertResult = tree.insert("A", 'A'); // false, duplicate
-	insertResult = tree.insert("Z", 'Z');
-	insertResult = tree.insert("M", 'M');
-	insertResult = tree.insert("D", 'D'); // false, duplicate
-	cout << endl << endl;
-	cout << tree << endl;
+	// insertResult = tree.insert("R", 'R'); // double rotate left
+	// cout << endl << endl;
+	// cout << tree << endl;
 
-	// // size and getHeight
-	cout << "tree size: " << tree.size() << endl;		 // 10
-	cout << "tree height: " << tree.getHeight() << endl; // 3
-	cout << endl;
-	//
-	//    // contains
-	bool containsResult;
-	containsResult = tree.contains("F"); // true
-	std::cout << containsResult << "\n";
-	containsResult = tree.contains("N"); // false
-	std::cout << containsResult << "\n";
-	for (const auto& val : tree.findRange("A", "F"))
-	{
-		std::cout << val << "\n";
-	}
+	// insertResult = tree.insert("V", 'V');
+	// insertResult = tree.insert("A", 'A'); // false, duplicate
+	// insertResult = tree.insert("Z", 'Z');
+	// insertResult = tree.insert("M", 'M');
+	// insertResult = tree.insert("D", 'D'); // false, duplicate
+	// cout << endl << endl;
+	// cout << tree << endl;
 
-	int data = tree.get("F").value();
-	std::cout << data;
+	// // // size and getHeight
+	// cout << "tree size: " << tree.size() << endl;		 // 10
+	// cout << "tree height: " << tree.getHeight() << endl; // 3
+	// cout << endl;
+	// //
+	// //    // contains
+	// bool containsResult;
+	// containsResult = tree.contains("F"); // true
+	// std::cout << containsResult << "\n";
+	// containsResult = tree.contains("N"); // false
+	// std::cout << containsResult << "\n\n";
+	// for (const auto& val : tree.findRange("D", "M"))
+	// {
+	// 	std::cout << val << "\n";
+	// }
 
-	cout << tree_2 << endl;
-	cout << tree << endl;
+	// int data = tree.get("F").value();
+	// std::cout << data;
+
+	// cout << tree_2 << endl;
+	// cout << tree << endl;
 
 	//
 	//    // get
